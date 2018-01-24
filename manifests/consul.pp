@@ -47,7 +47,7 @@ class cloudconsul::consul inherits cloudconsul {
     group   => root,
     mode    => '0644',
     source  => 'puppet:///modules/cloudconsul/consul.conf',
-    require => Class['consul'],
+    require => Class['consul', 'supervisor'],
     notify  => Exec['consul_dont_start'],
   }
 
