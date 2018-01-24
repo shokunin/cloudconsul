@@ -1,0 +1,14 @@
+{
+  "service": {
+    "name": "consul",
+    "tags": ["server"],
+    "port": 8500,
+    "checks": [
+      {
+        "script": "/bin/true",
+        "interval": "10s"
+      }
+    ]
+  }
+}
+

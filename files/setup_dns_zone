@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+
+require 'json'
+require 'uri'
+require 'net/http'
+require 'facter'
+
+ip = Facter.value(:ipaddress)
+
+
+url = URI.parse('http://169.254.169.254/latest/user-data')
+http = Net::HTTP.new(url.host, url.port)
+response = http.request(Net::HTTP::Get.new(url.request_uri))
+user_data = JSON.parse(response.body)
+
+zonefile = File.open('/etc/bind/zones.consul', 'w')
+
+zonefile.puts "zone \"#{user_data['domain']}\" IN {
+  type forward;
+  forward only;
+  forwarders { #{ip}  port 8600; };
+};"
+
+zonefile.close

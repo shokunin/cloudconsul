@@ -1,0 +1,49 @@
+#!/usr/bin/env ruby
+
+require 'json'
+require 'uri'
+require 'net/http'
+
+
+url = URI.parse('http://169.254.169.254/latest/user-data')
+http = Net::HTTP.new(url.host, url.port)
+response = http.request(Net::HTTP::Get.new(url.request_uri))
+user_data = JSON.parse(response.body)
+
+configfile = File.open('/opt/consul/etc/config.json', 'w')
+
+if user_data['consul_master'] == '127.0.0.1' 
+
+configfile.puts "{
+  \"bootstrap_expect\":1,
+  \"client_addr\":\"0.0.0.0\",
+  \"data_dir\":\"/opt/consul/data\",
+  \"datacenter\":\"#{user_data['domain'].gsub('.aws', '')}\",
+  \"domain\":\"#{user_data['domain']}\",
+  \"log_level\":\"INFO\",
+  \"node_name\":\"bastion-master.#{user_data['domain']}\",
+  \"server\":true,
+  \"ui_dir\":\"/opt/consul/ui\"
+}"
+
+
+else 
+nodename=File.read('/etc/hostname').chomp
+configfile.puts "{
+  \"retry_join\":[\"#{user_data['consul_master']}\"],
+  \"client_addr\":\"0.0.0.0\",
+  \"data_dir\":\"/opt/consul/data\",
+  \"datacenter\":\"#{user_data['domain'].gsub('.aws', '')}\",
+  \"domain\":\"#{user_data['domain']}\",
+  \"log_level\":\"INFO\",
+  \"node_name\":\"#{nodename}\",
+  \"server\":true,
+  \"ui_dir\":\"/opt/consul/ui\"
+}"
+
+end
+
+configfile.close
+
+# restart supervisorctl after the config change
+IO.popen("/usr/local/bin/supervisorctl restart consul")

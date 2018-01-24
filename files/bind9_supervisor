@@ -1,0 +1,11 @@
+[program:bind9]
+command=/bin/bash -c "/usr/local/bin/setup_dns_zone; /usr/sbin/named -f -u bind"
+directory=/tmp
+numprocs=1
+stdout_logfile=/var/log/bind.log
+stderr_logfile=/var/log/bind_error.log
+autostart=true
+autorestart=true
+startsecs=10
+stopwaitsecs=10
+priority=1
