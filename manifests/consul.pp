@@ -8,6 +8,14 @@ class cloudconsul::consul inherits cloudconsul {
     mode   => '0755',
   }
 
+  file { '/opt/consul/etc':
+    ensure  => directory,
+    owner   => root,
+    group   => root,
+    mode    => '0755',
+    require => File['/opt/consul'],
+  }
+
   class { '::consul':
     purge_config_dir => false,
     manage_service   => false,
