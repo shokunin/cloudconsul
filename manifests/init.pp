@@ -44,6 +44,7 @@
 #
 class cloudconsul {
 
+  require supervisor
   include cloudconsul::consul
 
 }
