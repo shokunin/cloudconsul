@@ -5,8 +5,7 @@ class cloudconsul::consul inherits cloudconsul {
     purge_config_dir => false,
     notify           => Exec['consul_dont_start'],
     config_hash      => {
-      'ui_dir'       => '/opt/consul/ui',
-      'data_dir'     => '/opt/consul/data',
+      'data_dir' => '/opt/consul/data',
     }
   }
 
