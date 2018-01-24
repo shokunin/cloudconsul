@@ -1,6 +1,13 @@
 # install and configure consul
 class cloudconsul::consul inherits cloudconsul {
 
+  file { '/opt/consul':
+    ensure => directory,
+    owner  => root,
+    group  => root,
+    mode   => '0755',
+  }
+
   class { '::consul':
     purge_config_dir => false,
     init_style       => 'unmanaged',
