@@ -10,10 +10,11 @@ class cloudconsul::consul inherits cloudconsul {
 
   class { '::consul':
     purge_config_dir => false,
+    manage_service   => false,
     init_style       => 'unmanaged',
     notify           => Exec['consul_dont_start'],
     config_hash      => {
-      'data_dir' => '/opt/consul/data',
+      'data_dir'  => '/opt/consul/data',
     }
   }
 
