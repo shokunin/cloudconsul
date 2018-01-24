@@ -3,7 +3,7 @@ class cloudconsul::consul inherits cloudconsul {
 
   class { '::consul':
     purge_config_dir => false,
-    init_style       => false,
+    init_style       => 'unmanaged',
     notify           => Exec['consul_dont_start'],
     config_hash      => {
       'data_dir' => '/opt/consul/data',
