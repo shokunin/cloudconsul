@@ -31,6 +31,8 @@ class cloudconsul::consul inherits cloudconsul {
   class { '::consul':
     purge_config_dir => false,
     manage_service   => false,
+    manage_group     => false,
+    manage_user      => false,
     init_style       => 'unmanaged',
     notify           => Exec['consul_dont_start'],
     config_hash      => {
