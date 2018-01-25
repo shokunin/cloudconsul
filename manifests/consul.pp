@@ -8,10 +8,10 @@ class cloudconsul::consul inherits cloudconsul {
 
   ensure_resource (
   'user',  'consul',
-    { user    => present,
-      groups  => 'consul',
-      shell   => '/usr/sbin/nologin',
-      require =>  Group['consul']
+    { 'ensure'    => present,
+      'groups'  => 'consul',
+      'shell'   => '/usr/sbin/nologin',
+      'require' =>  Group['consul']
     }
   )
 
