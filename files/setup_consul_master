@@ -23,6 +23,7 @@ configfile.puts "{
   \"log_level\":\"INFO\",
   \"node_name\":\"bastion-master.#{user_data['domain']}\",
   \"server\":true,
+  \"enable_script_checks\":true,
   \"ui_dir\":\"/opt/consul/ui\"
 }"
 
@@ -38,6 +39,7 @@ configfile.puts "{
   \"log_level\":\"INFO\",
   \"node_name\":\"#{nodename}\",
   \"server\":true,
+  \"enable_script_checks\":true,
   \"ui_dir\":\"/opt/consul/ui\"
 }"
 
