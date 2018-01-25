@@ -1,16 +1,19 @@
 # install and configure consul
 class cloudconsul::consul inherits cloudconsul {
 
-  group { 'consul':
-    ensure =>  present,
-  }
+  ensure_resource (
+    'group', 'consul',
+    {'ensure'=>'present'}
+  )
 
-  user { 'consul':
-    user    => present,
-    groups  => 'consul',
-    shell   => '/usr/sbin/nologin',
-    require =>  Group['consul'],
-  }
+  ensure_resource (
+  'user',  'consul',
+    { user    => present,
+      groups  => 'consul',
+      shell   => '/usr/sbin/nologin',
+      require =>  Group['consul']
+    }
+  )
 
 
   file { '/opt/consul':
