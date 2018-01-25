@@ -23,7 +23,7 @@ class cloudconsul::bind inherits cloudconsul {
     source => 'puppet:///modules/cloudconsul/setup_dns_zone'
   }
 
-  file { '/etc/supervsor.d/bind9.conf':
+  file { '/etc/supervisor.d/bind9.conf':
     ensure => file,
     owner  => root,
     group  => root,
