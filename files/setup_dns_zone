@@ -1,24 +1,61 @@
-#!/usr/bin/env ruby
+#!/usr/bin/python
 
-require 'json'
-require 'uri'
-require 'net/http'
-require 'facter'
+import json
+import urllib2
+import sys
+from jinja2 import Template
 
-ip = Facter.value(:ipaddress)
+try:
+    data = json.load(urllib2.urlopen('http://169.254.169.254/latest/user-data'))
+    ip = urllib2.urlopen('http://169.254.169.254/latest/meta-data/local-ipv4').read()
 
+except:
+    print >> sys.stderr, 'Was not able to connect to the Amazon API'
+    sys.exit(2)
 
-url = URI.parse('http://169.254.169.254/latest/user-data')
-http = Net::HTTP.new(url.host, url.port)
-response = http.request(Net::HTTP::Get.new(url.request_uri))
-user_data = JSON.parse(response.body)
-
-zonefile = File.open('/etc/bind/zones.consul', 'w')
-
-zonefile.puts "zone \"#{user_data['domain']}\" IN {
+zone_template="""
+zone "{{user_data['domain']}}" IN {
   type forward;
   forward only;
-  forwarders { #{ip}  port 8600; };
-};"
+  forwarders { {{ipaddr}}  port 8600; };
+};
+"""
+zt = Template(zone_template)
 
-zonefile.close
+main_config = open("/etc/bind/zones.consul", "w")
+main_config.write(zt.render(user_data=data, ipaddr=ip))
+main_config.close()
+
+local_config = open("/etc/bind/named.conf.local", "w")
+local_config.write("//Scripted Configure\ninclude \"/etc/bind/zones.consul\";")
+local_config.close()
+
+options_template="""
+options {
+        directory "/var/cache/bind";
+        allow-query     { any; };
+	allow-transfer  { localhost; };
+        recursion yes;
+        allow-recursion { any; };
+        forward only;
+        forwarders {
+{% for forwarder in forwarders %}
+			{{ forwarder }};
+{% endfor %}
+                };
+        dnssec-validation no;
+	dnssec-enable no;
+        auth-nxdomain no;    # conform to RFC1035
+        listen-on-v6 { any; };
+};
+"""
+ot = Template(options_template)
+
+if 'upstream_dns' in data:
+    myfowarders = data['upstream_dns'].split(",")   
+else:
+    myfowarders = ['8.8.8.8', '8.8.4.4']
+
+options_config = open("/etc/bind/named.conf.options", "w")
+options_config.write(ot.render(forwarders=myfowarders))
+options_config.close()
