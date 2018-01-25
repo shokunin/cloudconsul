@@ -5,13 +5,15 @@ import urllib2
 import sys
 from jinja2 import Template
 
-try:
-    data = json.load(urllib2.urlopen('http://169.254.169.254/latest/user-data'))
-    ip = urllib2.urlopen('http://169.254.169.254/latest/meta-data/local-ipv4').read()
-
-except:
-    print >> sys.stderr, 'Was not able to connect to the Amazon API'
-    sys.exit(2)
+for i in range(100):
+	while True:
+		try:
+		    data = json.load(urllib2.urlopen('http://169.254.169.254/latest/user-data'))
+		    ip = urllib2.urlopen('http://169.254.169.254/latest/meta-data/local-ipv4').read()
+		    break
+		
+		except:
+		    print >> sys.stderr, 'Was not able to connect to the Amazon API'
 
 zone_template="""
 zone "{{user_data['domain']}}" IN {
