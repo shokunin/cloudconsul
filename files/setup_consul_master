@@ -28,7 +28,7 @@ configfile.puts "{
 }"
 
 
-else 
+elsif user_data['role'] == "consul"
 nodename=File.read('/etc/hostname').chomp
 configfile.puts "{
   \"retry_join\":[\"#{user_data['consul_master']}\"],
@@ -43,6 +43,21 @@ configfile.puts "{
   \"ui_dir\":\"/opt/consul/ui\"
 }"
 
+else 
+name=File.read('/etc/hostname').chomp
+configfile.puts "{
+  \"retry_join\":[\"#{user_data['consul_master']}\"],
+  \"client_addr\":\"0.0.0.0\",
+  \"data_dir\":\"/opt/consul/data\",
+  \"datacenter\":\"#{user_data['domain'].gsub('.aws', '')}\",
+  \"domain\":\"#{user_data['domain']}\",
+  \"log_level\":\"INFO\",
+  \"node_name\":\"#{nodename}\",
+  \"server\":false,
+  \"enable_script_checks\":true
+}"
+
+#
 end
 
 configfile.close
