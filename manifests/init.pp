@@ -1,6 +1,7 @@
 # Class: cloudconsul
 class cloudconsul (
   Boolean $enable_bind = false,
+  Boolean $consul_server = false,
   String $template_version = '0.9.14',
   ) {
 

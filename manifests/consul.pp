@@ -68,14 +68,16 @@ class cloudconsul::consul inherits cloudconsul {
     notify  => Exec['consul_dont_start'],
   }
 
-  file { '/opt/consul/etc/role.json':
-    ensure  => present,
-    owner   => root,
-    group   => root,
-    mode    => '0644',
-    source  => 'puppet:///modules/cloudconsul/role.json',
-    require => Class['consul'],
-    notify  => Exec['consul_dont_start'],
+  if $cloudconsul::consul_server {
+    file { '/opt/consul/etc/role.json':
+      ensure  => present,
+      owner   => root,
+      group   => root,
+      mode    => '0644',
+      source  => 'puppet:///modules/cloudconsul/role.json',
+      require => Class['consul'],
+      notify  => Exec['consul_dont_start'],
+    }
   }
 
 }
