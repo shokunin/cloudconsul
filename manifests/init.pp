@@ -2,7 +2,7 @@
 class cloudconsul (
   Boolean $enable_bind = false,
   Boolean $consul_server = false,
-  String $template_version = '0.9.14',
+  String $template_version = '0.19.4',
   ) {
 
   require supervisor
