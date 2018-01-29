@@ -31,7 +31,7 @@ main_config.write(zt.render(user_data=data, ipaddr=ip))
 main_config.close()
 
 local_config = open("/etc/bind/named.conf.local", "w")
-local_config.write("//Scripted Configure\nstatistics-channels {\n\tinet 127.0.0.1 port 8080 allow { 127.0.0.1; };\n};\n")
+local_config.write("//Scripted Configure\nstatistics-channels {\n\tinet 127.0.0.1 port 8053 allow { 127.0.0.1; };\n};\n")
 local_config.write("//include \"/etc/bind/zones.consul\";\n")
 local_config.close()
 
