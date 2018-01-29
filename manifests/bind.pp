@@ -31,4 +31,13 @@ class cloudconsul::bind inherits cloudconsul {
     source => 'puppet:///modules/cloudconsul/supervisord_bind'
   }
 
+  file { '/usr/local/bin/bind_exporter':
+    ensure => file,
+    owner  => root,
+    group  => root,
+    mode   => '0755',
+    source => 'puppet:///modules/cloudconsul/bind_exporter'
+  }
+
+
 }

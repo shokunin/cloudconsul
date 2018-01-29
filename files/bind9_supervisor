@@ -9,3 +9,16 @@ autorestart=true
 startsecs=10
 stopwaitsecs=10
 priority=1
+
+[program:bind9_exporter]
+command=/usr/local/bin/bind_exporter
+directory=/tmp
+numprocs=1
+user=bind
+stdout_logfile=/var/log/bind_exporter.log
+stderr_logfile=/var/log/bind_exporter_error.log
+autostart=true
+autorestart=true
+startsecs=10
+stopwaitsecs=10
+priority=1
