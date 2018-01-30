@@ -1,5 +1,5 @@
 [program:bind9]
-command=/bin/bash -c "/usr/local/bin/setup_dns_zone; /usr/sbin/named -f -u bind"
+command=/bin/bash -c "/usr/local/bin/setup_dns_zone && exec /usr/sbin/named -f -u bind"
 directory=/tmp
 numprocs=1
 stdout_logfile=/var/log/bind.log
