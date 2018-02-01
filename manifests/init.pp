@@ -11,6 +11,7 @@ class cloudconsul (
 
   if $enable_bind {
     include cloudconsul::bind
+    include cloudconsul::snatch
   }
 
 }
