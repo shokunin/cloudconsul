@@ -14,8 +14,6 @@ import (
 func main() {
 
 	var snatchGroup string
-	var freeInstances = []string{}
-	var freeIps = []string{}
 
 	flag.StringVar(&snatchGroup, "snatch-group", "", "the snatch group to look for")
 	flag.Parse()
@@ -33,6 +31,9 @@ func main() {
 
 	l := 1
 	for l < 2 {
+
+		var freeInstances = []string{}
+		var freeIps = []string{}
 
 		///////////////////   Instances
 		params := &ec2.DescribeInstancesInput{
