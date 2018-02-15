@@ -1,0 +1,13 @@
+{
+  "service": {
+    "name": "prometheus-node",
+    "tags": ["prometheus-node"],
+    "port": 9100,
+    "checks": [
+      {
+        "script": "/usr/bin/curl -sf localhost:9100/metrics >/dev/null",
+        "interval": "10s"
+      }
+    ]
+  }
+}

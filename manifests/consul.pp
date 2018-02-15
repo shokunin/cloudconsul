@@ -57,6 +57,14 @@ class cloudconsul::consul inherits cloudconsul {
     source => 'puppet:///modules/cloudconsul/setup_consul_master',
   }
 
+  file { '/opt/consul/etc/prometheus-node.json':
+    ensure => present,
+    owner  => root,
+    group  => root,
+    mode   => '0644',
+    source =>  'puppet:///modules/cloudconsul/prometheus-node.json',
+  }
+
   # this will overwrite the base image so it runs as a server
   file { '/etc/supervisor.d/consul.conf':
     ensure  => present,
