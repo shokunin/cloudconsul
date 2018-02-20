@@ -3,12 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
-	"log"
-	"time"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
+	"log"
 	"os"
+	"time"
 )
 
 func main() {
@@ -85,6 +85,7 @@ func main() {
 
 		///////////////////   Results
 		if len(freeInstances) > 0 {
+			log.Println("Free Instance Count: ", len(freeInstances))
 			if len(freeInstances) == len(freeIps) {
 				for z, _ := range freeInstances {
 					input := &ec2.AssociateAddressInput{
@@ -96,11 +97,15 @@ func main() {
 						fmt.Println(assoc_err)
 					}
 					log.Println(
-							"Attaching ", freeIps[z],
-							" to ", freeInstances[z], " with ",
-							*assoc.AssociationId)
+						"Attaching ", freeIps[z],
+						" to ", freeInstances[z], " with ",
+						*assoc.AssociationId)
 				}
+			} else {
+				log.Println("ERROR: Mismatch Free Instance Count: ", len(freeInstances), " Free IP Count: ", len(freeIps))
 			}
+		} else {
+			log.Println("Nothing to do...")
 		}
 		time.Sleep(30 * time.Second)
 	}
