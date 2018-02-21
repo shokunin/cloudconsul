@@ -1,8 +1,6 @@
 # install and configure consul
 class cloudconsul::consul inherits cloudconsul {
 
-  $prom_tag = $cloudconsul::prometheus_tag
-
   ensure_resource (
     'group', 'consul',
     {'ensure'=>'present'}
