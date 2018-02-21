@@ -1,6 +1,8 @@
 # install and configure consul
 class cloudconsul::consul inherits cloudconsul {
 
+  $prom_tag = $cloudconsul::prometheus_tag
+
   ensure_resource (
     'group', 'consul',
     {'ensure'=>'present'}
@@ -58,11 +60,11 @@ class cloudconsul::consul inherits cloudconsul {
   }
 
   file { '/opt/consul/etc/prometheus-node.json':
-    ensure => present,
-    owner  => root,
-    group  => root,
-    mode   => '0644',
-    source =>  'puppet:///modules/cloudconsul/prometheus-node.json',
+    ensure  => present,
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    content => template('cloudconsul/prometheus-node.json.erb'),
   }
 
   # this will overwrite the base image so it runs as a server
