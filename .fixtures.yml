@@ -1,0 +1,23 @@
+fixtures:
+  forge_modules:
+    stdlib:
+      repo: "puppetlabs/stdlib"
+      ref: "4.16.0"
+    archive:
+      repo: "puppet/archive"
+      ref: "2.1.0"
+    staging:
+      repo: "puppet/staging"
+      ref: "3.1.0"
+  repositories:
+    supervisor:
+      repo: "https://github.com/shokunin/shokunin-supervisor.git"
+      ref: "master"
+    consul:
+      repo: "https://github.com/solarkennedy/puppet-consul"
+      ref: "master"
+    vault:
+      repo: "git@github.com:Kong/puppet-vault.git"
+      ref: "master"
+
+
