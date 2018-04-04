@@ -1,0 +1,15 @@
+#!/bin/bash
+
+TS=`date +%A-%H`
+DOM=`/usr/local/bin/parse_user_data -p domain`
+MASTER=`/usr/local/bin/parse_user_data -p consul_master`
+
+if [ $MASTER == "127.0.0.1" ]; then
+
+        /usr/local/bin/consul snapshot save snapshot-${DOM}-${TS}.gzip > /dev/null 2>&1
+
+        aws --region us-west-1 --page-size=100 s3 cp snapshot-${DOM}-${TS}.gzip s3://consulbackup-${DOM}/snapshot-${DOM}-${TS}.gzip > /dev/null 2>&1
+
+        rm snapshot-${DOM}-${TS}.gzip
+
+fi
